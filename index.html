@@ -1,0 +1,228 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CINÉFLIX</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#101014;color:white;font-family:Arial,sans-serif}
+header{height:70px;background:#08080b;display:flex;align-items:center;justify-content:space-between;padding:0 5%;position:sticky;top:0;z-index:5}
+.logo{font-size:27px;font-weight:bold;color:#e50914}
+nav{display:flex;gap:20px}
+nav a{color:white;text-decoration:none}
+input,textarea,select{background:#25252c;color:white;border:1px solid #444;padding:12px;border-radius:5px;width:100%;margin:6px 0}
+button{cursor:pointer;border:0;border-radius:5px;padding:11px 16px;font-weight:bold}
+.red{background:#e50914;color:white}
+.grey{background:#444;color:white}
+.search{width:180px}
+.hero{padding:100px 7%;min-height:370px;background:linear-gradient(90deg,#101014,#10101499,transparent),linear-gradient(0deg,#101014,transparent),url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1400') center/cover}
+.hero h1{font-size:45px}
+.hero p{max-width:450px;line-height:1.6}
+.section{padding:25px 5%}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}
+.filter{background:#303038;color:white}
+.filter.active{background:#e50914}
+.movies{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:17px}
+.movie{cursor:pointer;min-width:0}
+.movie:hover{transform:scale(1.03)}
+.poster{height:230px;background-size:cover;background-position:center;border-radius:7px;display:flex;align-items:end;padding:12px;position:relative}
+.poster:after{content:"";position:absolute;inset:0;background:linear-gradient(transparent,#000c)}
+.poster span{position:relative;z-index:1;font-weight:bold;font-size:19px}
+.movie h3{font-size:15px;margin:8px 0}
+.movie small{color:#aaa}
+.modal{display:none;position:fixed;inset:0;background:#000e;z-index:10;overflow:auto;padding:20px}
+.panel{background:#1c1c22;max-width:700px;margin:30px auto;padding:25px;border-radius:10px}
+.close{float:right;background:none;color:white;font-size:26px}
+video{width:100%;max-height:400px;background:black;margin-top:12px}
+.note{font-size:13px;color:#aaa;line-height:1.5}
+footer{padding:30px 5%;color:#999;background:#08080b;margin-top:35px}
+@media(max-width:700px){.movies{grid-template-columns:repeat(2,minmax(0,1fr))}header{padding:0 3%}.search{width:105px}nav{gap:9px}nav a{font-size:12px}.logo{font-size:21px}.hero h1{font-size:34px}}
+</style>
+</head>
+<body>
+
+<header>
+ <div class="logo">CINÉFLIX</div>
+ <nav><a href="#">Accueil</a><a href="#films">Films</a><a href="#series">Séries</a></nav>
+ <input class="search" id="search" placeholder="Rechercher...">
+</header>
+
+<section class="hero">
+ <h1>Le cinéma autrement.</h1>
+ <p>Découvre des histoires originales et des films indépendants.</p>
+ <button class="red" onclick="document.getElementById('films').scrollIntoView()">Explorer les films</button>
+</section>
+
+<section class="section" id="films">
+ <h2>🎬 Films à découvrir</h2>
+ <div class="filters" id="filters"></div>
+ <div class="movies" id="movieList"></div>
+ <p id="empty" hidden>Aucun film trouvé.</p>
+</section>
+
+<section class="section" id="series">
+ <h2>📺 Séries indépendantes</h2>
+ <div class="movies" id="seriesList"></div>
+</section>
+
+<footer>
+ <div class="logo">CINÉFLIX</div>
+ <p>Le cinéma indépendant à portée de clic.</p>
+ <button class="grey" onclick="openAdmin()">⚙ Administration</button>
+ <p class="note">© 2026 CINÉFLIX</p>
+</footer>
+
+<div class="modal" id="playerModal">
+ <div class="panel">
+  <button class="close" onclick="closePlayer()">×</button>
+  <h2 id="playTitle"></h2>
+  <p id="playDescription"></p>
+  <video id="player" controls playsinline></video>
+  <p id="playMessage" class="note"></p>
+ </div>
+</div>
+
+<div class="modal" id="adminModal">
+ <div class="panel">
+  <button class="close" onclick="closeAdmin()">×</button>
+  <h2>⚙ Administration CINÉFLIX</h2>
+  <p class="note">Ajoute ici les contenus que tu es autorisé à diffuser.</p>
+  <form id="filmForm">
+   <label>Titre du film</label>
+   <input id="title" required placeholder="Ex : Mon premier film">
+   <label>Description</label>
+   <textarea id="description" required placeholder="Décris ton film..."></textarea>
+   <label>Catégorie</label>
+   <select id="category">
+    <option>Action</option>
+    <option>Comédie</option>
+    <option>Horreur</option>
+    <option>Drame</option>
+    <option>Science-fiction</option>
+    <option>Documentaire</option>
+    <option>Mystère</option>
+   </select>
+   <label>Année</label>
+   <input id="year" type="number" value="2026" required>
+   <label>Adresse de l'affiche (image HTTPS)</label>
+   <input id="image" type="url" placeholder="https://exemple.com/affiche.jpg" required>
+   <label>Adresse de la vidéo (MP4 HTTPS)</label>
+   <input id="video" type="url" placeholder="https://exemple.com/film.mp4" required>
+   <label>Type de contenu</label>
+   <select id="type">
+    <option value="film">Film</option>
+    <option value="serie">Série</option>
+   </select>
+   <button class="red" type="submit">Ajouter le contenu</button>
+  </form>
+  <hr>
+  <h3>Mes contenus ajoutés</h3>
+  <div id="adminList"></div>
+  <p class="note">Version locale : les contenus sont conservés dans ce navigateur uniquement. Ce panneau n'est pas protégé par un véritable système de connexion.</p>
+ </div>
+</div>
+
+<script>
+const defaults=[
+{id:"horizon",title:"Horizon",category:"Science-fiction",year:2025,image:"https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=700",description:"Un voyage mystérieux vers un monde inconnu.",video:"",type:"film"},
+{id:"voyage",title:"Dernier Voyage",category:"Drame",year:2025,image:"https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=700",description:"Une histoire entre départ et retrouvailles.",video:"",type:"film"},
+{id:"ombre",title:"Les Ombres",category:"Horreur",year:2024,image:"https://images.unsplash.com/photo-1509248961158-e54f6934749c?w=700",description:"Une ville cache un terrible secret.",video:"",type:"film"},
+{id:"action",title:"Sans Retour",category:"Action",year:2025,image:"https://images.unsplash.com/photo-1519608487953-e999c86e7455?w=700",description:"Une aventure pleine de rebondissements.",video:"",type:"film"},
+{id:"secret",title:"Le Secret",category:"Mystère",year:2025,image:"https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=700",description:"Une découverte va changer plusieurs vies.",video:"",type:"film"},
+{id:"serie1",title:"Nouvelle Vie",category:"Drame",year:2025,image:"https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=700",description:"Une nouvelle histoire commence.",video:"",type:"serie"}
+];
+
+let added=[];
+try{added=JSON.parse(localStorage.getItem("cineflixContents")||"[]");if(!Array.isArray(added))added=[];}catch(e){added=[];}
+let category="Tous";
+let currentId=null;
+
+function allContents(){return [...defaults,...added]}
+function safeUrl(url){
+ try{const u=new URL(url);return u.protocol==="https:"?u.href:"";}catch(e){return "";}
+}
+function card(item){
+ return `<article class="movie" data-id="${encodeURIComponent(item.id)}" tabindex="0">
+ <div class="poster" style="background-image:url('${item.image}')"><span>${escapeText(item.title)}</span></div>
+ <h3>${escapeText(item.title)}</h3><small>${escapeText(item.category)} • ${item.year}</small>
+ </article>`;
+}
+function escapeText(s){
+ return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function render(){
+ const q=document.getElementById("search").value.toLowerCase();
+ const films=allContents().filter(x=>x.type==="film"&&(category==="Tous"||x.category===category)&&(x.title.toLowerCase().includes(q)||x.category.toLowerCase().includes(q)));
+ const series=allContents().filter(x=>x.type==="serie"&&(x.title.toLowerCase().includes(q)||x.category.toLowerCase().includes(q)));
+ document.getElementById("movieList").innerHTML=films.map(card).join("");
+ document.getElementById("seriesList").innerHTML=series.map(card).join("");
+ document.getElementById("empty").hidden=films.length>0;
+}
+function renderFilters(){
+ const cats=["Tous","Action","Comédie","Horreur","Drame","Science-fiction","Documentaire","Mystère"];
+ document.getElementById("filters").innerHTML=cats.map(c=>`<button class="filter ${category===c?"active":""}" data-cat="${c}">${c}</button>`).join("");
+}
+function openPlayer(id){
+ const item=allContents().find(x=>x.id===id);if(!item)return;
+ currentId=id;
+ document.getElementById("playTitle").textContent=item.title;
+ document.getElementById("playDescription").textContent=item.description;
+ const p=document.getElementById("player");
+ p.pause();p.removeAttribute("src");p.load();
+ const url=safeUrl(item.video);
+ if(url){p.src=url;document.getElementById("playMessage").textContent="Bonne séance !";}
+ else{document.getElementById("playMessage").textContent="Aucune vidéo n'a été ajoutée pour ce contenu.";}
+ document.getElementById("playerModal").style.display="block";
+}
+function closePlayer(){
+ const p=document.getElementById("player");p.pause();p.removeAttribute("src");
+ document.getElementById("playerModal").style.display="none";
+}
+function openAdmin(){renderAdmin();document.getElementById("adminModal").style.display="block";}
+function closeAdmin(){document.getElementById("adminModal").style.display="none";}
+function renderAdmin(){
+ document.getElementById("adminList").innerHTML=added.length?added.map(x=>`<p>${escapeText(x.title)} — <button class="grey" data-delete="${encodeURIComponent(x.id)}">Supprimer</button></p>`).join(""):"Aucun contenu ajouté.";
+}
+document.getElementById("filmForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ const title=document.getElementById("title").value.trim();
+ const description=document.getElementById("description").value.trim();
+ const image=safeUrl(document.getElementById("image").value);
+ const video=safeUrl(document.getElementById("video").value);
+ const year=Number(document.getElementById("year").value);
+ if(!title||!description||!image||!video||!Number.isInteger(year)||year<1900||year>2100){
+  alert("Vérifie les champs et utilise des adresses HTTPS valides.");return;
+ }
+ const item={id:"custom-"+Date.now(),title,description,image,video,year,category:document.getElementById("category").value,type:document.getElementById("type").value};
+ added.push(item);
+ try{localStorage.setItem("cineflixContents",JSON.stringify(added));}
+ catch(err){alert("Stockage indisponible. Vérifie l'espace de ton navigateur.");added.pop();return;}
+ e.target.reset();
+ render();renderAdmin();
+ alert("Contenu ajouté !");
+});
+document.getElementById("adminList").addEventListener("click",e=>{
+ const b=e.target.closest("[data-delete]");if(!b)return;
+ const id=decodeURIComponent(b.dataset.delete);
+ added=added.filter(x=>x.id!==id);
+ localStorage.setItem("cineflixContents",JSON.stringify(added));
+ render();renderAdmin();
+});
+document.getElementById("movieList").addEventListener("click",e=>{
+ const c=e.target.closest("[data-id]");if(c)openPlayer(decodeURIComponent(c.dataset.id));
+});
+document.getElementById("seriesList").addEventListener("click",e=>{
+ const c=e.target.closest("[data-id]");if(c)openPlayer(decodeURIComponent(c.dataset.id));
+});
+document.getElementById("filters").addEventListener("click",e=>{
+ const b=e.target.closest("[data-cat]");if(!b)return;
+ category=b.dataset.cat;renderFilters();render();
+});
+document.getElementById("search").addEventListener("input",render);
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeAdmin();closePlayer();}});
+renderFilters();render();
+</script>
+</body>
+</html>
