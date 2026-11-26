@@ -4,224 +4,156 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CINÉFLIX</title>
+<title>MangoAnime - Univers Anime</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#101014;color:white;font-family:Arial,sans-serif}
-header{height:70px;background:#08080b;display:flex;align-items:center;justify-content:space-between;padding:0 5%;position:sticky;top:0;z-index:5}
-.logo{font-size:27px;font-weight:bold;color:#e50914}
+header{height:75px;background:#09090d;display:flex;align-items:center;justify-content:space-between;padding:0 5%;position:sticky;top:0;z-index:5;border-bottom:1px solid #292933}
+.logo{font-size:27px;font-weight:900;color:#ff9d24}
+.logo span{color:#fff}
 nav{display:flex;gap:20px}
-nav a{color:white;text-decoration:none}
-input,textarea,select{background:#25252c;color:white;border:1px solid #444;padding:12px;border-radius:5px;width:100%;margin:6px 0}
-button{cursor:pointer;border:0;border-radius:5px;padding:11px 16px;font-weight:bold}
-.red{background:#e50914;color:white}
+nav a{color:#ddd;text-decoration:none;font-size:14px}
+nav a:hover{color:#ff9d24}
+.search{background:#25252c;border:1px solid #444;color:white;padding:11px;border-radius:7px;width:190px}
+.hero{min-height:430px;padding:105px 7%;background:linear-gradient(90deg,#101014 5%,#101014dd 45%,transparent),linear-gradient(0deg,#101014,transparent),url('https://images.unsplash.com/photo-1578632767115-351597cf2477?w=1500') center/cover}
+.hero h1{font-size:52px;margin:0 0 15px}
+.hero p{max-width:480px;line-height:1.7;color:#ddd}
+.btn{padding:12px 22px;border:0;border-radius:6px;cursor:pointer;font-weight:bold;margin:10px 8px 0 0}
+.orange{background:#ff9d24;color:#17100a}
 .grey{background:#444;color:white}
-.search{width:180px}
-.hero{padding:100px 7%;min-height:370px;background:linear-gradient(90deg,#101014,#10101499,transparent),linear-gradient(0deg,#101014,transparent),url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1400') center/cover}
-.hero h1{font-size:45px}
-.hero p{max-width:450px;line-height:1.6}
-.section{padding:25px 5%}
-.filters{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}
-.filter{background:#303038;color:white}
-.filter.active{background:#e50914}
-.movies{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:17px}
-.movie{cursor:pointer;min-width:0}
-.movie:hover{transform:scale(1.03)}
-.poster{height:230px;background-size:cover;background-position:center;border-radius:7px;display:flex;align-items:end;padding:12px;position:relative}
-.poster:after{content:"";position:absolute;inset:0;background:linear-gradient(transparent,#000c)}
+.section{padding:24px 5%}
+.section h2{font-size:22px}
+.filters{display:flex;gap:9px;flex-wrap:wrap;margin:18px 0}
+.filter{background:#292930;border:1px solid #444;color:white;padding:9px 15px;border-radius:20px;cursor:pointer}
+.filter.active,.filter:hover{background:#ff9d24;color:#17100a;border-color:#ff9d24}
+.movies{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:18px}
+.movie{cursor:pointer;min-width:0;transition:.2s}
+.movie:hover{transform:scale(1.04)}
+.poster{height:255px;background-size:cover;background-position:center;border-radius:8px;display:flex;align-items:end;padding:14px;position:relative;overflow:hidden}
+.poster:after{content:"";position:absolute;inset:0;background:linear-gradient(transparent,#000d)}
 .poster span{position:relative;z-index:1;font-weight:bold;font-size:19px}
-.movie h3{font-size:15px;margin:8px 0}
+.movie h3{font-size:15px;margin:9px 0 5px}
 .movie small{color:#aaa}
 .modal{display:none;position:fixed;inset:0;background:#000e;z-index:10;overflow:auto;padding:20px}
-.panel{background:#1c1c22;max-width:700px;margin:30px auto;padding:25px;border-radius:10px}
-.close{float:right;background:none;color:white;font-size:26px}
-video{width:100%;max-height:400px;background:black;margin-top:12px}
-.note{font-size:13px;color:#aaa;line-height:1.5}
-footer{padding:30px 5%;color:#999;background:#08080b;margin-top:35px}
-@media(max-width:700px){.movies{grid-template-columns:repeat(2,minmax(0,1fr))}header{padding:0 3%}.search{width:105px}nav{gap:9px}nav a{font-size:12px}.logo{font-size:21px}.hero h1{font-size:34px}}
+.panel{background:#1c1c22;max-width:800px;margin:30px auto;padding:25px;border-radius:12px}
+.close{float:right;background:none;color:white;font-size:28px;border:0;cursor:pointer}
+.detail-image{width:100%;height:240px;object-fit:cover;border-radius:8px}
+.player{width:100%;aspect-ratio:16/9;background:#080808;margin-top:15px;border:0}
+.note{color:#aaa;font-size:13px;line-height:1.6}
+footer{background:#09090d;padding:35px 5%;color:#888;margin-top:40px}
+@media(max-width:800px){.movies{grid-template-columns:repeat(3,minmax(0,1fr))}.hero h1{font-size:38px}}
+@media(max-width:500px){header{padding:0 3%;height:65px}.logo{font-size:21px}nav{gap:9px}nav a{font-size:11px}.search{width:105px;padding:8px}.hero{padding:85px 5%;min-height:350px}.hero h1{font-size:33px}.movies{grid-template-columns:repeat(2,minmax(0,1fr))}.poster{height:205px}}
 </style>
 </head>
 <body>
 
 <header>
- <div class="logo">CINÉFLIX</div>
- <nav><a href="#">Accueil</a><a href="#films">Films</a><a href="#series">Séries</a></nav>
- <input class="search" id="search" placeholder="Rechercher...">
+ <div class="logo">Mango<span>Anime</span> 🍊</div>
+ <nav>
+  <a href="#">Accueil</a>
+  <a href="#catalogue">Animes</a>
+  <a href="#genres">Genres</a>
+ </nav>
+ <input class="search" id="search" placeholder="Rechercher un anime...">
 </header>
 
 <section class="hero">
- <h1>Le cinéma autrement.</h1>
- <p>Découvre des histoires originales et des films indépendants.</p>
- <button class="red" onclick="document.getElementById('films').scrollIntoView()">Explorer les films</button>
+ <h1>Ton univers anime.</h1>
+ <p>Découvre des aventures incroyables, des héros inoubliables et des univers fantastiques.</p>
+ <button class="btn orange" onclick="openAnime('onepiece')">▶ Découvrir</button>
+ <button class="btn grey" onclick="document.getElementById('catalogue').scrollIntoView()">Explorer</button>
 </section>
 
-<section class="section" id="films">
- <h2>🎬 Films à découvrir</h2>
+<section class="section" id="catalogue">
+ <h2>🍥 Catalogue des animes</h2>
  <div class="filters" id="filters"></div>
- <div class="movies" id="movieList"></div>
- <p id="empty" hidden>Aucun film trouvé.</p>
+ <div class="movies" id="animeList"></div>
+ <p id="empty" hidden>Aucun anime trouvé.</p>
 </section>
 
-<section class="section" id="series">
- <h2>📺 Séries indépendantes</h2>
- <div class="movies" id="seriesList"></div>
+<section class="section" id="genres">
+ <h2>✨ À découvrir</h2>
+ <p class="note">De nouvelles aventures seront ajoutées au catalogue.</p>
 </section>
+
+<div class="modal" id="modal">
+ <div class="panel">
+  <button class="close" onclick="closeAnime()">×</button>
+  <h2 id="animeTitle"></h2>
+  <img class="detail-image" id="animeImage" alt="">
+  <p id="animeDescription"></p>
+  <p id="animeMeta" class="note"></p>
+  <h3>Épisodes</h3>
+  <div id="episodes"></div>
+  <div id="videoArea"></div>
+  <p id="videoMessage" class="note"></p>
+ </div>
+</div>
 
 <footer>
- <div class="logo">CINÉFLIX</div>
- <p>Le cinéma indépendant à portée de clic.</p>
- <button class="grey" onclick="openAdmin()">⚙ Administration</button>
- <p class="note">© 2026 CINÉFLIX</p>
+ <div class="logo">MangoAnime 🍊</div>
+ <p>Un univers dédié aux passionnés d'animation japonaise.</p>
+ <p class="note">Les contenus vidéo doivent être autorisés à la diffusion.</p>
+ <p>© 2026 MangoAnime</p>
 </footer>
 
-<div class="modal" id="playerModal">
- <div class="panel">
-  <button class="close" onclick="closePlayer()">×</button>
-  <h2 id="playTitle"></h2>
-  <p id="playDescription"></p>
-  <video id="player" controls playsinline></video>
-  <p id="playMessage" class="note"></p>
- </div>
-</div>
-
-<div class="modal" id="adminModal">
- <div class="panel">
-  <button class="close" onclick="closeAdmin()">×</button>
-  <h2>⚙ Administration CINÉFLIX</h2>
-  <p class="note">Ajoute ici les contenus que tu es autorisé à diffuser.</p>
-  <form id="filmForm">
-   <label>Titre du film</label>
-   <input id="title" required placeholder="Ex : Mon premier film">
-   <label>Description</label>
-   <textarea id="description" required placeholder="Décris ton film..."></textarea>
-   <label>Catégorie</label>
-   <select id="category">
-    <option>Action</option>
-    <option>Comédie</option>
-    <option>Horreur</option>
-    <option>Drame</option>
-    <option>Science-fiction</option>
-    <option>Documentaire</option>
-    <option>Mystère</option>
-   </select>
-   <label>Année</label>
-   <input id="year" type="number" value="2026" required>
-   <label>Adresse de l'affiche (image HTTPS)</label>
-   <input id="image" type="url" placeholder="https://exemple.com/affiche.jpg" required>
-   <label>Adresse de la vidéo (MP4 HTTPS)</label>
-   <input id="video" type="url" placeholder="https://exemple.com/film.mp4" required>
-   <label>Type de contenu</label>
-   <select id="type">
-    <option value="film">Film</option>
-    <option value="serie">Série</option>
-   </select>
-   <button class="red" type="submit">Ajouter le contenu</button>
-  </form>
-  <hr>
-  <h3>Mes contenus ajoutés</h3>
-  <div id="adminList"></div>
-  <p class="note">Version locale : les contenus sont conservés dans ce navigateur uniquement. Ce panneau n'est pas protégé par un véritable système de connexion.</p>
- </div>
-</div>
-
 <script>
-const defaults=[
-{id:"horizon",title:"Horizon",category:"Science-fiction",year:2025,image:"https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=700",description:"Un voyage mystérieux vers un monde inconnu.",video:"",type:"film"},
-{id:"voyage",title:"Dernier Voyage",category:"Drame",year:2025,image:"https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=700",description:"Une histoire entre départ et retrouvailles.",video:"",type:"film"},
-{id:"ombre",title:"Les Ombres",category:"Horreur",year:2024,image:"https://images.unsplash.com/photo-1509248961158-e54f6934749c?w=700",description:"Une ville cache un terrible secret.",video:"",type:"film"},
-{id:"action",title:"Sans Retour",category:"Action",year:2025,image:"https://images.unsplash.com/photo-1519608487953-e999c86e7455?w=700",description:"Une aventure pleine de rebondissements.",video:"",type:"film"},
-{id:"secret",title:"Le Secret",category:"Mystère",year:2025,image:"https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=700",description:"Une découverte va changer plusieurs vies.",video:"",type:"film"},
-{id:"serie1",title:"Nouvelle Vie",category:"Drame",year:2025,image:"https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=700",description:"Une nouvelle histoire commence.",video:"",type:"serie"}
+const animes=[
+{id:"onepiece",title:"One Piece",genre:"Aventure",year:"1999",image:"https://images.unsplash.com/photo-1578632767115-351597cf2477?w=700",description:"Pars à l'aventure avec un équipage de pirates à la recherche d'un trésor légendaire.",episodes:0,video:""},
+{id:"demon",title:"Demon Slayer",genre:"Action",year:"2019",image:"https://images.unsplash.com/photo-1614583225154-5fcdda07019e?w=700",description:"Un jeune héros se bat contre des démons pour sauver sa famille.",episodes:0,video:""},
+{id:"naruto",title:"Naruto",genre:"Aventure",year:"2002",image:"https://images.unsplash.com/photo-1601850494422-3cf14624b0b3?w=700",description:"Suis le parcours d'un jeune ninja qui rêve de devenir Hokage.",episodes:0,video:""},
+{id:"jujutsu",title:"Jujutsu Kaisen",genre:"Fantastique",year:"2020",image:"https://images.unsplash.com/photo-1578632767115-351597cf2477?w=700",description:"Des combattants affrontent des malédictions surnaturelles.",episodes:0,video:""},
+{id:"yourname",title:"Your Name",genre:"Romance",year:"2016",image:"https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=700",description:"Deux adolescents découvrent un lien mystérieux qui dépasse le temps.",episodes:0,video:""},
+{id:"spy",title:"Spy x Family",genre:"Comédie",year:"2022",image:"https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=700",description:"Une famille pas comme les autres cache de grands secrets.",episodes:0,video:""}
 ];
 
-let added=[];
-try{added=JSON.parse(localStorage.getItem("cineflixContents")||"[]");if(!Array.isArray(added))added=[];}catch(e){added=[];}
-let category="Tous";
-let currentId=null;
+let genre="Tous";
+let selected=null;
 
-function allContents(){return [...defaults,...added]}
-function safeUrl(url){
- try{const u=new URL(url);return u.protocol==="https:"?u.href:"";}catch(e){return "";}
-}
-function card(item){
- return `<article class="movie" data-id="${encodeURIComponent(item.id)}" tabindex="0">
- <div class="poster" style="background-image:url('${item.image}')"><span>${escapeText(item.title)}</span></div>
- <h3>${escapeText(item.title)}</h3><small>${escapeText(item.category)} • ${item.year}</small>
- </article>`;
-}
-function escapeText(s){
+function escapeHTML(s){
  return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function card(a){
+ return `<article class="movie" data-id="${a.id}">
+ <div class="poster" style="background-image:url('${a.image}')"><span>${escapeHTML(a.title)}</span></div>
+ <h3>${escapeHTML(a.title)}</h3><small>${escapeHTML(a.genre)} • ${a.year}</small>
+ </article>`;
 }
 function render(){
  const q=document.getElementById("search").value.toLowerCase();
- const films=allContents().filter(x=>x.type==="film"&&(category==="Tous"||x.category===category)&&(x.title.toLowerCase().includes(q)||x.category.toLowerCase().includes(q)));
- const series=allContents().filter(x=>x.type==="serie"&&(x.title.toLowerCase().includes(q)||x.category.toLowerCase().includes(q)));
- document.getElementById("movieList").innerHTML=films.map(card).join("");
- document.getElementById("seriesList").innerHTML=series.map(card).join("");
- document.getElementById("empty").hidden=films.length>0;
+ const list=animes.filter(a=>(genre==="Tous"||a.genre===genre)&&(a.title.toLowerCase().includes(q)||a.genre.toLowerCase().includes(q)));
+ document.getElementById("animeList").innerHTML=list.map(card).join("");
+ document.getElementById("empty").hidden=list.length>0;
 }
 function renderFilters(){
- const cats=["Tous","Action","Comédie","Horreur","Drame","Science-fiction","Documentaire","Mystère"];
- document.getElementById("filters").innerHTML=cats.map(c=>`<button class="filter ${category===c?"active":""}" data-cat="${c}">${c}</button>`).join("");
+ const genres=["Tous","Action","Aventure","Fantastique","Romance","Comédie"];
+ document.getElementById("filters").innerHTML=genres.map(g=>`<button class="filter ${genre===g?"active":""}" data-genre="${g}">${g}</button>`).join("");
 }
-function openPlayer(id){
- const item=allContents().find(x=>x.id===id);if(!item)return;
- currentId=id;
- document.getElementById("playTitle").textContent=item.title;
- document.getElementById("playDescription").textContent=item.description;
- const p=document.getElementById("player");
- p.pause();p.removeAttribute("src");p.load();
- const url=safeUrl(item.video);
- if(url){p.src=url;document.getElementById("playMessage").textContent="Bonne séance !";}
- else{document.getElementById("playMessage").textContent="Aucune vidéo n'a été ajoutée pour ce contenu.";}
- document.getElementById("playerModal").style.display="block";
+function openAnime(id){
+ const a=animes.find(x=>x.id===id);if(!a)return;
+ selected=a;
+ document.getElementById("animeTitle").textContent=a.title;
+ document.getElementById("animeDescription").textContent=a.description;
+ document.getElementById("animeMeta").textContent=a.genre+" • "+a.year;
+ document.getElementById("animeImage").src=a.image;
+ document.getElementById("episodes").innerHTML='<p class="note">Aucun épisode disponible pour le moment.</p>';
+ document.getElementById("videoArea").innerHTML="";
+ document.getElementById("videoMessage").textContent="Les épisodes apparaîtront ici lorsqu'ils seront disponibles avec une autorisation de diffusion.";
+ document.getElementById("modal").style.display="block";
 }
-function closePlayer(){
- const p=document.getElementById("player");p.pause();p.removeAttribute("src");
- document.getElementById("playerModal").style.display="none";
+function closeAnime(){
+ document.getElementById("videoArea").innerHTML="";
+ document.getElementById("modal").style.display="none";
 }
-function openAdmin(){renderAdmin();document.getElementById("adminModal").style.display="block";}
-function closeAdmin(){document.getElementById("adminModal").style.display="none";}
-function renderAdmin(){
- document.getElementById("adminList").innerHTML=added.length?added.map(x=>`<p>${escapeText(x.title)} — <button class="grey" data-delete="${encodeURIComponent(x.id)}">Supprimer</button></p>`).join(""):"Aucun contenu ajouté.";
-}
-document.getElementById("filmForm").addEventListener("submit",e=>{
- e.preventDefault();
- const title=document.getElementById("title").value.trim();
- const description=document.getElementById("description").value.trim();
- const image=safeUrl(document.getElementById("image").value);
- const video=safeUrl(document.getElementById("video").value);
- const year=Number(document.getElementById("year").value);
- if(!title||!description||!image||!video||!Number.isInteger(year)||year<1900||year>2100){
-  alert("Vérifie les champs et utilise des adresses HTTPS valides.");return;
- }
- const item={id:"custom-"+Date.now(),title,description,image,video,year,category:document.getElementById("category").value,type:document.getElementById("type").value};
- added.push(item);
- try{localStorage.setItem("cineflixContents",JSON.stringify(added));}
- catch(err){alert("Stockage indisponible. Vérifie l'espace de ton navigateur.");added.pop();return;}
- e.target.reset();
- render();renderAdmin();
- alert("Contenu ajouté !");
-});
-document.getElementById("adminList").addEventListener("click",e=>{
- const b=e.target.closest("[data-delete]");if(!b)return;
- const id=decodeURIComponent(b.dataset.delete);
- added=added.filter(x=>x.id!==id);
- localStorage.setItem("cineflixContents",JSON.stringify(added));
- render();renderAdmin();
-});
-document.getElementById("movieList").addEventListener("click",e=>{
- const c=e.target.closest("[data-id]");if(c)openPlayer(decodeURIComponent(c.dataset.id));
-});
-document.getElementById("seriesList").addEventListener("click",e=>{
- const c=e.target.closest("[data-id]");if(c)openPlayer(decodeURIComponent(c.dataset.id));
-});
-document.getElementById("filters").addEventListener("click",e=>{
- const b=e.target.closest("[data-cat]");if(!b)return;
- category=b.dataset.cat;renderFilters();render();
-});
 document.getElementById("search").addEventListener("input",render);
-document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeAdmin();closePlayer();}});
+document.getElementById("filters").addEventListener("click",e=>{
+ const b=e.target.closest("[data-genre]");if(!b)return;
+ genre=b.dataset.genre;renderFilters();render();
+});
+document.getElementById("animeList").addEventListener("click",e=>{
+ const c=e.target.closest("[data-id]");if(c)openAnime(c.dataset.id);
+});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeAnime();});
 renderFilters();render();
 </script>
 </body>
